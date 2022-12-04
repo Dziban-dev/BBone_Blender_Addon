@@ -32,6 +32,6 @@ The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github
   
 2. Open Blender and go into Preferences.
   
-3. Navigate to the Addon sections, click install and search for the file .py you just downloaded.
+3. Navigate to the Addon sections, click install and search for the .py file you just downloaded.
   
 4. Enable the addon by ticking the checkbox.
