@@ -1,5 +1,7 @@
 BBONE | Blender Addon
 
+!(Baner)[https://github.com/Dziban-dev/BBone_Blender_Addon/blob/main/BBone.png]
+
 ## What is BBone
 
 BBone is an addont aimed at helping with the creation of base meshes used for sculping , Think of BSpheres but free.
