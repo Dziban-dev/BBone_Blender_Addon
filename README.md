@@ -1,6 +1,6 @@
 BBONE | Blender Addon
 
-!(Baner)[https://github.com/Dziban-dev/BBone_Blender_Addon/blob/main/BBone.png]
+![Baner](https://github.com/Dziban-dev/BBone_Blender_Addon/blob/main/BBone.png)
 
 ## What is BBone
 
