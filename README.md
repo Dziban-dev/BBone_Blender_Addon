@@ -12,7 +12,7 @@ The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github
   
 - You can now link and unlink BBone Mesh from BBone Armature.
   
-- You can link or relink BBone armature by selecting the armature and the mesh targe or the other way around.
+- You can link or relink BBone armatures by selecting the armature and the mesh targe or the other way around.
   
 - You can now symetrize selected bones over the X axis on Edit Mode.
   
