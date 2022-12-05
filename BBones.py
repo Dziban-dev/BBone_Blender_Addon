@@ -426,9 +426,9 @@ class OBJECT_OT_SymmetrizeArm(bpy.types.Operator):
         bpy.ops.armature.symmetrize()
         return{'FINISHED'}
 
-class DRAW_PT_UI(Panel):
+class DRAW_HT_UI(Panel):
     bl_label = "BBones"
-    bl_idname = "BBONE_MT_DRAW_UI"
+    bl_idname = "BBONE_HT_DRAW_UI"
     bl_region_type = "WINDOW"
     bl_space_type = "VIEW_3D"
 
@@ -531,13 +531,13 @@ classes = (
     OBJECT_OT_UnlinkBBone,
     OBJECT_OT_SymmetrizeArm,
     OBJECT_OT_Remesh,
-    DRAW_PT_UI,
+    DRAW_HT_UI,
     )
 
 def menu_func(self, context):
     
     layout = self.layout
-    layout.popover("BBONE_MT_DRAW_UI",)
+    layout.popover("BBONE_HT_DRAW_UI",)
 
 def register():
     from bpy.utils import register_class
