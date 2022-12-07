@@ -19,7 +19,7 @@
 bl_info = {
     "name": "BBones",
     "author": "Fork by Dziban, Based on the work by Alfonso Annarumma",
-    "version": (1, 1, 1),
+    "version": (1, 1, 2),
     "blender": (2, 80, 0),
     "location": "Header > Show Tools Settings > BBones",
     "description": "Adds a new Mesh Object",
@@ -358,7 +358,7 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
             bpy.ops.mesh.customdata_skin_add()
             context.scene.cursor.location = cursor
 
-            bpy.context.scene.collection.objects.link(obj2)
+            #bpy.context.scene.collection.objects.link(obj2)
             obj2.modifiers.new("Skin",'SKIN')
 
             i = 0
@@ -375,7 +375,7 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
             obj2.select_set(True)
             bpy.context.view_layer.objects.active = obj
             bpy.ops.object.join()
-
+    
 
             if not self.update:
                 mod = obj.modifiers.new("Subdiv",'SUBSURF')
