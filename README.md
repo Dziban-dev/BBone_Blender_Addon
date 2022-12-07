@@ -15,6 +15,7 @@ The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github
 - Minor improvements.
 ### v 1.1.1
 - Corrected an error where BBone Armatures not positioned at the world origin would not be re-meshed correctly.
+- Corrected a bug that would cause the 3D_View mode set to Edit_Mode after updating a BBone Armature linked to a BBone Skin.
 
 ## New features! v 1.0
 
