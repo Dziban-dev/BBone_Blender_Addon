@@ -385,7 +385,7 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
                 rem.voxel_size = 0.017
                 return {'FINISHED'}
             else:
-                bpy.ops.object.mode_set(mode='EDIT')
+                bpy.ops.object.mode_set(mode='OBJECT')
             return {'FINISHED'}
 
 class OBJECT_OT_LinkBBone(bpy.types.Operator):
