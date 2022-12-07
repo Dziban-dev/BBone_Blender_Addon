@@ -10,7 +10,7 @@ The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github
 
 ## How to use?
 
-[![Watch the video](https://github.com/Dziban-dev/BBone_Blender_Addon/blob/main/BBone.png)](https://youtu.be/t90QsF38ldc)
+[![Watch the video](https://img.youtube.com/vi/t90QsF38ldc/hqdefault.jpg)](https://youtu.be/t90QsF38ldc)
 
 ## New Version! v 1.1
 
