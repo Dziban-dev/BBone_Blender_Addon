@@ -19,7 +19,7 @@
 bl_info = {
     "name": "BBones",
     "author": "Fork by Dziban, Based on the work by Alfonso Annarumma",
-    "version": (1, 1),
+    "version": (1, 1, 1),
     "blender": (2, 80, 0),
     "location": "Header > Show Tools Settings > BBones",
     "description": "Adds a new Mesh Object",
@@ -338,7 +338,7 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
             bpy.ops.object.mode_set(mode='OBJECT')
 
             #ADDING SPHERES AT HEAD AND TAILS
-            mesh2 = bpy.data.meshes.new("Skin")
+            mesh2 = bpy.data.meshes.new("Spheres")
             bm2 = bmesh.new()
             for v_co in verts_loc:
                 bm2.verts.new(v_co)
@@ -346,7 +346,18 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
             bm2.to_mesh(mesh2)
             mesh2.update()
 
-            obj2 = bpy.data.objects.new('Spheres', mesh2)
+            # add the mesh as an object into the scene with this utility module
+            from bpy_extras import object_utils
+            object_utils.object_data_add(context, mesh2, operator=self)
+
+            #obj2 = bpy.data.objects.new('Spheres', mesh2)
+                            
+            context.scene.cursor.location = cursor
+            obj2 = context.object
+            context.view_layer.objects.active = obj2
+            bpy.ops.mesh.customdata_skin_add()
+            context.scene.cursor.location = cursor
+
             bpy.context.scene.collection.objects.link(obj2)
             obj2.modifiers.new("Skin",'SKIN')
 
