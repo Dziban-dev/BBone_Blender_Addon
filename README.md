@@ -13,6 +13,8 @@ The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github
 - Corrected bugs when remeshing BBone Skin meshes.
 - Major refactor to BBone Skin meshes, so they now more closely resamble the BBone armature shapes.
 - Minor improvements.
+### v 1.1.1
+- Corrected an error where BBone Armatures not positioned at the world origin would not be re-meshed correctly.
 
 ## New features! v 1.0
 
