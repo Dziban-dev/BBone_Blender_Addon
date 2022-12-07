@@ -19,7 +19,7 @@
 bl_info = {
     "name": "BBones",
     "author": "Fork by Dziban, Based on the work by Alfonso Annarumma",
-    "version": (1, 0),
+    "version": (1, 1),
     "blender": (2, 80, 0),
     "location": "Header > Show Tools Settings > BBones",
     "description": "Adds a new Mesh Object",
@@ -143,11 +143,10 @@ def convert_skin(context):
         r2 = b.tail_radius
         
         verts.append(v1)
-        
         verts.append(v2)
         radius.append(r1)
         radius.append(r2)
-        #print(verts) 
+
         edges.append( (verts.index(verts[-1]),verts.index(verts[-2])))
 
 
@@ -236,7 +235,7 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
             bpy.ops.object.mode_set(mode='OBJECT')
         cursor = context.scene.cursor.location
         context.scene.cursor.location = context.object.location
-        arm.display_type = 'BOUNDS'
+        arm.display_type = 'WIRE'
         armname = arm.name.replace(" (BBone Armature)","")
         
         if self.envelope:            
@@ -272,7 +271,6 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
             )
 
             mesh = bpy.data.meshes.new("Skin")
-
             bm = bmesh.new()
 
             for v_co in verts_loc:
@@ -282,6 +280,8 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
             for e_idx in edges:
                 bm.edges.new([bm.verts[i] for i in e_idx])
 
+            #bmesh.ops.split_edges(bm,edges=bm.edges)
+            #bpy.ops.object.mode_set(mode = 'OBJECT')
             bm.to_mesh(mesh)
             mesh.update()
             if not self.update:
@@ -310,15 +310,62 @@ class OBJECT_OT_Convert_BBone(bpy.types.Operator):
                 context.view_layer.objects.active = arm
             i = 0
             for r in radius:
-                obj.data.skin_vertices[0].data[i].radius = r,r
-                
+                obj.data.skin_vertices[0].data[i].radius = r* 1.1,r* 1.1
                 i+=1        
             
-            mesh = obj.data
-            mesh_ = RemoveDoubles (mesh, prop.distance)
+            #mesh = obj.data
+            #mesh_ = RemoveDoubles (mesh, prop.distance)
             #mesh_ = mesh
-            
-            obj.data = mesh_
+            #obj.data = mesh_
+
+            bpy.context.view_layer.objects.active = None
+            bpy.context.view_layer.objects.active = obj
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.mesh.select_all(action='SELECT')
+            bpy.ops.mesh.rip('INVOKE_DEFAULT')
+            bpy.ops.object.skin_root_mark()
+
+            #SELECT THE LOOSE VERTEX (skin spheres)
+
+            bpy.ops.mesh.select_all(action='INVERT')
+            bpy.ops.mesh.delete(type='VERT')  
+ 
+            # bpy.ops.object.mode_set(mode='OBJECT')
+            # for v in obj.data.vertices:
+            #     if v.select:
+            #         obj.data.skin_vertices[0].data[v.index].radius[0] = obj.data.skin_vertices[0].data[v.index].radius[0] * 1.1
+            #         obj.data.skin_vertices[0].data[v.index].radius[1] = obj.data.skin_vertices[0].data[v.index].radius[1] * 1.1
+            bpy.ops.object.mode_set(mode='OBJECT')
+
+            #ADDING SPHERES AT HEAD AND TAILS
+            mesh2 = bpy.data.meshes.new("Skin")
+            bm2 = bmesh.new()
+            for v_co in verts_loc:
+                bm2.verts.new(v_co)
+            bm.verts.ensure_lookup_table()
+            bm2.to_mesh(mesh2)
+            mesh2.update()
+
+            obj2 = bpy.data.objects.new('Spheres', mesh2)
+            bpy.context.scene.collection.objects.link(obj2)
+            obj2.modifiers.new("Skin",'SKIN')
+
+            i = 0
+            for r in radius:
+                obj2.data.skin_vertices[0].data[i].radius = r* 1.2,r* 1.2
+                i+=1
+            #REMOVE DOUBLES
+            meshx = obj2.data
+            mesh_ = RemoveDoubles (meshx, prop.distance)
+            mesh_ = meshx
+            obj2.data = mesh_
+
+            obj.select_set(True)
+            obj2.select_set(True)
+            bpy.context.view_layer.objects.active = obj
+            bpy.ops.object.join()
+
+
             if not self.update:
                 mod = obj.modifiers.new("Subdiv",'SUBSURF')
                 mod.levels = 2
@@ -356,7 +403,7 @@ class OBJECT_OT_LinkBBone(bpy.types.Operator):
                 obj.envelope_ID = msh #registring the mesh name as the envelope ID
 
                 obj.data.display_type = 'ENVELOPE'
-                obj.display_type = 'BOUNDS'
+                obj.display_type = 'WIRE'
                 obj.show_in_front = True
                 #bpy.ops.object.mode_set(mode='EDIT_MESH')
         return {'FINISHED'}
@@ -395,8 +442,25 @@ class OBJECT_OT_Remesh(bpy.types.Operator):
             if "BBone Mesh" in obj.envelope_ID:
                 obj.hide_set(True)
                 obj.envelope_ID = ""
+                obj.display_type = 'TEXTURED'
+                obj.data.display_type = 'ENVELOPE'
+                obj.show_in_front = True
                 bpy.context.view_layer.objects.active = msh
                 bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
+                bpy.ops.object.modifier_apply(modifier="Remesh")
+                bpy.ops.object.mode_set(mode='SCULPT')
+                context.window.workspace = bpy.data.workspaces['Sculpting']
+            if "BBone Skin" in obj.envelope_ID:
+                obj.hide_set(True)
+                obj.envelope_ID = ""
+                obj.display_type = 'TEXTURED'
+                obj.data.display_type = 'ENVELOPE'
+                obj.show_in_front = True
+                bpy.context.view_layer.objects.active = msh
+                bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
+                bpy.ops.object.modifier_apply(modifier="Subdiv")
+                bpy.ops.object.modifier_apply(modifier="Skin")
+                bpy.ops.object.modifier_apply(modifier="Subdiv.001")
                 bpy.ops.object.modifier_apply(modifier="Remesh")
                 bpy.ops.object.mode_set(mode='SCULPT')
                 context.window.workspace = bpy.data.workspaces['Sculpting']
@@ -404,15 +468,35 @@ class OBJECT_OT_Remesh(bpy.types.Operator):
             return {'FINISHED'}
         if obj.type =='MESH':
             #id = obj.envelope_ID
-            for arm in context.scene.objects: 
-                if arm.envelope_ID == obj.name:
-                    arm.hide_set(True) 
-                    arm.envelope_ID = ""
-            context.view_layer.objects.active = obj
-            bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
-            bpy.ops.object.modifier_apply(modifier="Remesh")
-            bpy.ops.object.mode_set(mode='SCULPT')
-            context.window.workspace = bpy.data.workspaces['Sculpting']
+            if "BBone Mesh" in obj.name:
+                for arm in context.scene.objects: 
+                    if arm.envelope_ID == obj.name:
+                        arm.hide_set(True) 
+                        arm.envelope_ID = ""
+                        arm.display_type = 'TEXTURED'
+                        arm.data.display_type = 'ENVELOPE'
+                        arm.show_in_front = True
+                context.view_layer.objects.active = obj
+                bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
+                bpy.ops.object.modifier_apply(modifier="Remesh")
+                bpy.ops.object.mode_set(mode='SCULPT')
+                context.window.workspace = bpy.data.workspaces['Sculpting']
+            if "BBone Skin" in obj.name:
+                for arm in context.scene.objects: 
+                    if arm.envelope_ID == obj.name:
+                        arm.hide_set(True) 
+                        arm.envelope_ID = ""
+                        arm.display_type = 'TEXTURED'
+                        arm.data.display_type = 'ENVELOPE'
+                        arm.show_in_front = True
+                context.view_layer.objects.active = obj
+                bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
+                bpy.ops.object.modifier_apply(modifier="Subdiv")
+                bpy.ops.object.modifier_apply(modifier="Skin")
+                bpy.ops.object.modifier_apply(modifier="Subdiv.001")
+                bpy.ops.object.modifier_apply(modifier="Remesh")
+                bpy.ops.object.mode_set(mode='SCULPT')
+                context.window.workspace = bpy.data.workspaces['Sculpting']
             return {'FINISHED'}
 
 class OBJECT_OT_SymmetrizeArm(bpy.types.Operator):
