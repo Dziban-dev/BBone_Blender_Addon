@@ -22,7 +22,7 @@ The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github
 - Corrected a bug that would cause the 3D_View mode set to Edit_Mode after updating a BBone Armature linked to a BBone Skin.
 - Fixed a bug that would cause an error when trying to re-mesh a BBone Skin with a disabled modifier. 
 
-## v 1.1.2
+### v 1.1.2
  - Fixed error with re-mesh operator when trying to remesh BBone Skins, preventing it from adding the final subdivision modifier. 
 
 ## New features! v 1.0
