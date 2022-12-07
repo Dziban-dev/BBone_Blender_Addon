@@ -8,6 +8,10 @@ BBone is an addont aimed at helping with the creation of base meshes used for sc
 
 The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github.com/anfeo) A [GitHub - anfeo/Blender-Sculpt-Tools: Blender Sculpt tools](https://github.com/anfeo/Blender-Sculpt-Tools) ,I just streamed lined it a bit, added some new cool features, and I'm planning on adding more in the near future.
 
+## How to use?
+
+[![Watch the video](https://github.com/Dziban-dev/BBone_Blender_Addon/blob/main/BBone.png)](https://youtu.be/t90QsF38ldc)
+
 ## New Version! v 1.1
 
 - Corrected bugs when remeshing BBone Skin meshes.
