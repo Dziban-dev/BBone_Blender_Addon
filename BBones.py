@@ -458,7 +458,8 @@ class OBJECT_OT_Remesh(bpy.types.Operator):
                 obj.show_in_front = True
                 bpy.context.view_layer.objects.active = msh
                 bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
-                bpy.ops.object.modifier_apply(modifier="Remesh")
+                #bpy.ops.object.modifier_apply(modifier="Remesh")
+                bpy.ops.object.convert(target='MESH')
                 bpy.ops.object.mode_set(mode='SCULPT')
                 context.window.workspace = bpy.data.workspaces['Sculpting']
             if "BBone Skin" in obj.envelope_ID:
@@ -469,10 +470,7 @@ class OBJECT_OT_Remesh(bpy.types.Operator):
                 obj.show_in_front = True
                 bpy.context.view_layer.objects.active = msh
                 bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
-                bpy.ops.object.modifier_apply(modifier="Subdiv")
-                bpy.ops.object.modifier_apply(modifier="Skin")
-                bpy.ops.object.modifier_apply(modifier="Subdiv.001")
-                bpy.ops.object.modifier_apply(modifier="Remesh")
+                bpy.ops.object.convert(target='MESH')
                 bpy.ops.object.mode_set(mode='SCULPT')
                 context.window.workspace = bpy.data.workspaces['Sculpting']
              
@@ -489,7 +487,8 @@ class OBJECT_OT_Remesh(bpy.types.Operator):
                         arm.show_in_front = True
                 context.view_layer.objects.active = obj
                 bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
-                bpy.ops.object.modifier_apply(modifier="Remesh")
+                #bpy.ops.object.modifier_apply(modifier="Remesh")
+                bpy.ops.object.convert(target='MESH')
                 bpy.ops.object.mode_set(mode='SCULPT')
                 context.window.workspace = bpy.data.workspaces['Sculpting']
             if "BBone Skin" in obj.name:
@@ -502,10 +501,7 @@ class OBJECT_OT_Remesh(bpy.types.Operator):
                         arm.show_in_front = True
                 context.view_layer.objects.active = obj
                 bpy.ops.object.make_single_user(type='SELECTED_OBJECTS',object=True,obdata=True)
-                bpy.ops.object.modifier_apply(modifier="Subdiv")
-                bpy.ops.object.modifier_apply(modifier="Skin")
-                bpy.ops.object.modifier_apply(modifier="Subdiv.001")
-                bpy.ops.object.modifier_apply(modifier="Remesh")
+                bpy.ops.object.convert(target='MESH')
                 bpy.ops.object.mode_set(mode='SCULPT')
                 context.window.workspace = bpy.data.workspaces['Sculpting']
             return {'FINISHED'}
