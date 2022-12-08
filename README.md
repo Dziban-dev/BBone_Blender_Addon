@@ -28,6 +28,9 @@ The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github
 ### v 1.1.3
  - Fixed error where you couldn't unlink the armature if the BBone mesh got deleted or renamed.
  - A broken link between BBone Armature and BBone mesh will  now display a warning.
+ 
+### V 1.1.4
+ - Fixed error where the mesh creation operator was retrieving the bone position from the EDIT mode instead of the POSE mode.
 
 ## New features! v 1.0
 
