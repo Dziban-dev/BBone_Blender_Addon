@@ -23,7 +23,11 @@ The addon itself it's a Fork from Sculpt Tools anfeo found here: (https://github
 - Fixed a bug that would cause an error when trying to re-mesh a BBone Skin with a disabled modifier. 
 
 ### v 1.1.2
- - Fixed error with re-mesh operator when trying to remesh BBone Skins, preventing it from adding the final subdivision modifier. 
+ - Fixed error with re-mesh operator when trying to remesh BBone Skins, preventing it from adding the final subdivision modifier.
+ 
+### v 1.1.3
+ - Fixed error where you couldn't unlink the armature if the BBone mesh got deleted or renamed.
+ - A broken link between BBone Armature and BBone mesh will  now display a warning.
 
 ## New features! v 1.0
 
