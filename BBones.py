@@ -19,7 +19,7 @@
 bl_info = {
     "name": "BBones",
     "author": "Fork by Dziban, Based on the work by Alfonso Annarumma",
-    "version": (1, 1, 2),
+    "version": (1, 1, 3),
     "blender": (2, 80, 0),
     "location": "Header > Show Tools Settings > BBones",
     "description": "Adds a new Mesh Object",
@@ -585,8 +585,16 @@ class DRAW_HT_UI(Panel):
                         env = col.operator("object.unlinkbbone",
                                         icon='UNLINKED',
                                         text="Unlink Armature")
+                    else:
+                        col.label(text="Warning! Broken Link ")
+                        env = col.operator("object.unlinkbbone",
+                                        icon='UNLINKED',
+                                        text="Unlink Armature")
                     row.separator()
                     col.label(text="Finalize:")
+                    if obj.envelope_ID not in context.scene.objects:
+                        col.label(text="    BBone mesh not found")
+                        col.label(text="    (Deleted or Renamed)")
                     row.separator()
                     if obj.envelope_ID in context.scene.objects:
 
