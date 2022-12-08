@@ -19,7 +19,7 @@
 bl_info = {
     "name": "BBones",
     "author": "Fork by Dziban, Based on the work by Alfonso Annarumma",
-    "version": (1, 1, 3),
+    "version": (1, 1, 4),
     "blender": (2, 80, 0),
     "location": "Header > Show Tools Settings > BBones",
     "description": "Adds a new Mesh Object",
@@ -130,6 +130,8 @@ def convert_skin(context):
     This function takes inputs and returns vertex and face arrays.
     no actual mesh data creation is done here.
     """
+    bpy.ops.object.mode_set(mode='POSE')
+
     verts = []
     edges = []
     arm = context.object
@@ -137,11 +139,15 @@ def convert_skin(context):
     radius = []
     
     for b in bones:
-        v1 = b.head_local
+        #v1 = b.head_local
+        context.object.data.bones.active = b
+        v1 = context.active_pose_bone.head
         r1 = b.head_radius
-        v2 = b.tail_local
+        #v2 = b.tail_local
+        v2 = context.active_pose_bone.tail
         r2 = b.tail_radius
-        
+        bpy.context.object.data.bones.active = None
+
         verts.append(v1)
         verts.append(v2)
         radius.append(r1)
@@ -149,6 +155,7 @@ def convert_skin(context):
 
         edges.append( (verts.index(verts[-1]),verts.index(verts[-2])))
 
+    bpy.ops.object.mode_set(mode='OBJECT')
 
     return verts, edges, radius
 
@@ -593,8 +600,7 @@ class DRAW_HT_UI(Panel):
                     row.separator()
                     col.label(text="Finalize:")
                     if obj.envelope_ID not in context.scene.objects:
-                        col.label(text="    BBone mesh not found")
-                        col.label(text="    (Deleted or Renamed)")
+                        col.label(text="    Linked BBone mesh not found")
                     row.separator()
                     if obj.envelope_ID in context.scene.objects:
 
